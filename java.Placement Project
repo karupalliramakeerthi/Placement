@@ -1,0 +1,162 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Book {
+    int id;
+    String name;
+    boolean issued;
+    double rating;
+    double price;
+
+    Book(int id, String name, double rating, double price) {
+        this.id = id;
+        this.name = name;
+        this.rating = rating;
+        this.price = price;
+        this.issued = false;
+    }
+
+    void display() {
+        System.out.println("ID: " + id +
+                " | Name: " + name +
+                " | Rating: " + rating +
+                " | Price: ₹" + price +
+                " | Status: " + (issued ? "Issued" : "Available"));
+    }
+}
+
+public class LibraryApp {
+    static ArrayList<Book> books = new ArrayList<>();
+
+    static void loadBooks() {
+        books.add(new Book(101, "Java Programming", 4.5, 500));
+        books.add(new Book(102, "Python Basics", 4.2, 400));
+        books.add(new Book(103, "Data Structures", 4.6, 550));
+        books.add(new Book(104, "Operating Systems", 4.3, 600));
+        books.add(new Book(105, "Computer Networks", 4.1, 450));
+        books.add(new Book(106, "DBMS", 4.4, 520));
+        books.add(new Book(107, "Software Engineering", 4.0, 480));
+        books.add(new Book(108, "Web Development", 4.3, 530));
+    }
+
+    static void showBooks() {
+        System.out.println("\n--- ALL BOOKS ---");
+        for (Book b : books) {
+            b.display();
+        }
+    }
+
+    static void issueBook(Scanner sc) {
+        System.out.print("Enter Book ID to issue: ");
+        int id = sc.nextInt();
+
+        for (Book b : books) {
+            if (b.id == id) {
+                if (!b.issued) {
+                    b.issued = true;
+                    System.out.println("Book Issued!");
+                } else {
+                    System.out.println("Already Issued!");
+                }
+                return;
+            }
+        }
+        System.out.println("Book Not Found!");
+    }
+
+    static void returnBook(Scanner sc) {
+        System.out.print("Enter Book ID to return: ");
+        int id = sc.nextInt();
+
+        for (Book b : books) {
+            if (b.id == id) {
+                if (b.issued) {
+                    b.issued = false;
+                    System.out.println("Book Returned!");
+                } else {
+                    System.out.println("Not Issued!");
+                }
+                return;
+            }
+        }
+        System.out.println("Book Not Found!");
+    }
+
+    static void addBook(Scanner sc) {
+        System.out.print("Enter Book ID: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter Book Name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Enter Rating (out of 5): ");
+        double rating = sc.nextDouble();
+
+        System.out.print("Enter Price: ");
+        double price = sc.nextDouble();
+
+        books.add(new Book(id, name, rating, price));
+        System.out.println("Book Added Successfully!");
+    }
+
+    static void searchBook(Scanner sc) {
+        sc.nextLine();
+        System.out.print("Enter Book Name to search: ");
+        String name = sc.nextLine();
+
+        for (Book b : books) {
+            if (b.name.toLowerCase().contains(name.toLowerCase())) {
+                b.display();
+                return;
+            }
+        }
+        System.out.println("Book Not Found!");
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int choice;
+
+        loadBooks();
+
+        do {
+            System.out.println("\n=== LIBRARY MANAGEMENT ===");
+            System.out.println("1. Show Books");
+            System.out.println("2. Issue Book");
+            System.out.println("3. Return Book");
+            System.out.println("4. Add Book");
+            System.out.println("5. Search Book");
+            System.out.println("6. Exit");
+            System.out.print("Enter choice: ");
+
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    showBooks();
+                    break;
+                case 2:
+                    issueBook(sc);
+                    break;
+                case 3:
+                    returnBook(sc);
+                    break;
+                case 4:
+                    addBook(sc);
+                    break;
+                case 5:
+                    searchBook(sc);
+                    break;
+                case 6:
+                    System.out.println("Thank you!");
+                    break;
+                default:
+                    System.out.println("Invalid choice!");
+            }
+
+        } while (choice != 6);
+
+        sc.close();
+    }
+}
