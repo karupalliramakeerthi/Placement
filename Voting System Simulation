@@ -1,0 +1,100 @@
+import java.util.*;
+class Voter {
+    String voterId;
+    boolean hasVoted;
+    Voter(String voterId) {
+        this.voterId = voterId;
+        this.hasVoted = false;
+    }
+}
+public class Main {
+    static HashMap<String, Voter> voters = new HashMap<>();
+    static HashMap<String, Integer> candidates = new HashMap<>();
+    static Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) {
+        candidates.put("Alice", 0);
+        candidates.put("Bob", 0);
+        candidates.put("Charlie", 0);
+        int choice;
+        do {
+            System.out.println("\n===== Voting System =====");
+            System.out.println("1. Register Voter");
+            System.out.println("2. Cast Vote");
+            System.out.println("3. Show Results");
+            System.out.println("4. Exit");
+            System.out.print("Enter choice: ");
+
+            choice = sc.nextInt();
+            sc.nextLine(); 
+
+            switch (choice) {
+                case 1:
+                    registerVoter();
+                    break;
+                case 2:
+                    castVote();
+                    break;
+                case 3:
+                    showResults();
+                    break;
+                case 4:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid choice!");
+            }
+
+        } while (choice != 4);
+    }
+    static void registerVoter() {
+        System.out.print("Enter Voter ID: ");
+        String id = sc.nextLine();
+
+        if (voters.containsKey(id)) {
+            System.out.println("Voter already registered!");
+        } else {
+            voters.put(id, new Voter(id));
+            System.out.println("Voter registered successfully.");
+        }
+    }
+    static void castVote() {
+        System.out.print("Enter Voter ID: ");
+        String id = sc.nextLine();
+
+        if (!voters.containsKey(id)) {
+            System.out.println("Voter not registered!");
+            return;
+        }
+
+        Voter voter = voters.get(id);
+
+        if (voter.hasVoted) {
+            System.out.println("You have already voted!");
+            return;
+        }
+
+        System.out.println("Candidates:");
+        for (String candidate : candidates.keySet()) {
+            System.out.println("- " + candidate);
+        }
+
+        System.out.print("Enter candidate name: ");
+        String choice = sc.nextLine();
+
+        if (!candidates.containsKey(choice)) {
+            System.out.println("Invalid candidate!");
+            return;
+        }
+        candidates.put(choice, candidates.get(choice) + 1);
+        voter.hasVoted = true;
+
+        System.out.println("Vote cast successfully!");
+    }
+    static void showResults() {
+        System.out.println("\n===== Voting Results =====");
+
+        for (Map.Entry<String, Integer> entry : candidates.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue() + " votes");
+        }
+    }
+}
