@@ -1,0 +1,156 @@
+import java.util.*;
+public class Main {
+    static Scanner sc = new Scanner(System.in);
+    static boolean isBinary(String s) {
+        return s.matches("[01]+");
+    }
+    static boolean isOctal(String s) {
+        return s.matches("[0-7]+");
+    }
+    static boolean isHex(String s) {
+        return s.matches("[0-9A-Fa-f]+");
+    }
+    static void binaryToDecimal() {
+        System.out.print("Enter Binary Number: ");
+        String bin = sc.next();
+
+        if (!isBinary(bin)) {
+            System.out.println("Invalid Binary Number!");
+            return;
+        }
+
+        int decimal = Integer.parseInt(bin, 2);
+        System.out.println("Decimal: " + decimal);
+    }
+    static void decimalToBinary() {
+        System.out.print("Enter Decimal Number: ");
+
+        if (!sc.hasNextInt()) {
+            System.out.println("Invalid input!");
+            sc.next();
+            return;
+        }
+
+        int dec = sc.nextInt();
+
+        if (dec < 0) {
+            System.out.println("Invalid Decimal Number!");
+            return;
+        }
+
+        System.out.println("Binary: " + Integer.toBinaryString(dec));
+    }
+    static void octalToDecimal() {
+        System.out.print("Enter Octal Number: ");
+        String oct = sc.next();
+
+        if (!isOctal(oct)) {
+            System.out.println("Invalid Octal Number!");
+            return;
+        }
+
+        int decimal = Integer.parseInt(oct, 8);
+        System.out.println("Decimal: " + decimal);
+    }
+    static void decimalToOctal() {
+        System.out.print("Enter Decimal Number: ");
+
+        if (!sc.hasNextInt()) {
+            System.out.println("Invalid input!");
+            sc.next();
+            return;
+        }
+
+        int dec = sc.nextInt();
+
+        if (dec < 0) {
+            System.out.println("Invalid Decimal Number!");
+            return;
+        }
+
+        System.out.println("Octal: " + Integer.toOctalString(dec));
+    }
+    static void hexToDecimal() {
+        System.out.print("Enter Hexadecimal Number: ");
+        String hex = sc.next();
+
+        if (!isHex(hex)) {
+            System.out.println("Invalid Hex Number!");
+            return;
+        }
+
+        int decimal = Integer.parseInt(hex, 16);
+        System.out.println("Decimal: " + decimal);
+    }
+    static void decimalToHex() {
+        System.out.print("Enter Decimal Number: ");
+
+        if (!sc.hasNextInt()) {
+            System.out.println("Invalid input!");
+            sc.next();
+            return;
+        }
+
+        int dec = sc.nextInt();
+
+        if (dec < 0) {
+            System.out.println("Invalid Decimal Number!");
+            return;
+        }
+
+        System.out.println("Hexadecimal: " + Integer.toHexString(dec).toUpperCase());
+    }
+
+    public static void main(String[] args) {
+
+        int choice = 0; 
+
+        do {
+            System.out.println("\n===== NUMBER SYSTEM CONVERTER =====");
+            System.out.println("1. Binary → Decimal");
+            System.out.println("2. Decimal → Binary");
+            System.out.println("3. Octal → Decimal");
+            System.out.println("4. Decimal → Octal");
+            System.out.println("5. Hex → Decimal");
+            System.out.println("6. Decimal → Hex");
+            System.out.println("7. Exit");
+
+            System.out.print("Enter choice: ");
+
+            if (!sc.hasNextInt()) {
+                System.out.println("Invalid choice!");
+                sc.next(); 
+                continue;
+            }
+
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    binaryToDecimal();
+                    break;
+                case 2:
+                    decimalToBinary();
+                    break;
+                case 3:
+                    octalToDecimal();
+                    break;
+                case 4:
+                    decimalToOctal();
+                    break;
+                case 5:
+                    hexToDecimal();
+                    break;
+                case 6:
+                    decimalToHex();
+                    break;
+                case 7:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid choice!");
+            }
+
+        } while (choice != 7);
+    }
+}
