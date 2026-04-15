@@ -1,0 +1,97 @@
+import java.util.*;
+class Question {
+    String question;
+    String[] options;
+    int correctAnswer;
+    Question(String question, String[] options, int correctAnswer) {
+        this.question = question;
+        this.options = options;
+        this.correctAnswer = correctAnswer;
+    }
+}
+public class Main {
+    static Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) {
+        ArrayList<Question> quiz = new ArrayList<>();
+        quiz.add(new Question("Java is a ___ language?",
+                new String[]{"Programming", "Markup", "Styling", "Database"}, 0));
+        quiz.add(new Question("Which keyword is used for inheritance?",
+                new String[]{"this", "super", "extends", "implements"}, 2));
+        quiz.add(new Question("Which method is entry point of Java?",
+                new String[]{"start()", "run()", "main()", "init()"}, 2));
+        quiz.add(new Question("Which data type is used for decimals?",
+                new String[]{"int", "float", "char", "boolean"}, 1));
+        quiz.add(new Question("Which operator is used for comparison?",
+                new String[]{"+", "-", "==", "*"}, 2));
+
+        quiz.add(new Question("Which loop is entry-controlled?",
+                new String[]{"for", "do-while", "switch", "case"}, 0));
+
+        quiz.add(new Question("Which keyword is used to create object?",
+                new String[]{"new", "class", "void", "static"}, 0));
+
+        quiz.add(new Question("Which package is used for input?",
+                new String[]{"java.util", "java.io", "java.lang", "java.sql"}, 0));
+
+        quiz.add(new Question("Which concept allows multiple forms?",
+                new String[]{"Encapsulation", "Polymorphism", "Inheritance", "Abstraction"}, 1));
+
+        quiz.add(new Question("Which symbol is used for comments?",
+                new String[]{"//", "##", "**", "$$"}, 0));
+
+        quiz.add(new Question("Which method is used to print?",
+                new String[]{"print()", "println()", "echo()", "display()"}, 1));
+
+        quiz.add(new Question("Which keyword is used to define class?",
+                new String[]{"define", "class", "object", "struct"}, 1));
+
+        quiz.add(new Question("Which type stores true/false?",
+                new String[]{"int", "String", "boolean", "double"}, 2));
+
+        quiz.add(new Question("Which is not OOP concept?",
+                new String[]{"Encapsulation", "Inheritance", "Compilation", "Polymorphism"}, 2));
+
+        quiz.add(new Question("Which company developed Java?",
+                new String[]{"Microsoft", "Apple", "Sun Microsystems", "Google"}, 2));
+
+        int score = 0;
+        int[] userAnswers = new int[quiz.size()];
+        System.out.println("=== Online Quiz Started ===");
+        long startTime = System.currentTimeMillis(); 
+        for (int i = 0; i < quiz.size(); i++) {
+            Question q = quiz.get(i);
+            System.out.println("\nQ" + (i + 1) + ": " + q.question);
+            for (int j = 0; j < 4; j++) {
+                System.out.println((j + 1) + ". " + q.options[j]);
+            }
+            System.out.print("Enter answer (1-4): ");
+            int ans = sc.nextInt();
+            if (ans >= 1 && ans <= 4) {
+                userAnswers[i] = ans - 1;
+            } else {
+                userAnswers[i] = -1; 
+            }
+        }
+        long endTime = System.currentTimeMillis(); 
+        long timeTaken = (endTime - startTime) / 1000;
+        for (int i = 0; i < quiz.size(); i++) {
+            if (userAnswers[i] == quiz.get(i).correctAnswer) {
+                score++;
+            }
+        }
+        System.out.println("\n=== Quiz Completed ===");
+        System.out.println("Score: " + score + "/" + quiz.size());
+        System.out.println("Time Taken: " + timeTaken + " seconds");
+        System.out.println("\n=== Correct Answers ===");
+        for (int i = 0; i < quiz.size(); i++) {
+            Question q = quiz.get(i);
+            System.out.println("Q" + (i + 1) + ": " + q.question);
+            if (userAnswers[i] != -1)
+                System.out.println("Your Answer: " + q.options[userAnswers[i]]);
+            else
+                System.out.println("Your Answer: Invalid");
+            System.out.println("Correct Answer: " + q.options[q.correctAnswer]);
+            System.out.println();
+        }
+    }
+}
