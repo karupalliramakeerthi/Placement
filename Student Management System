@@ -1,0 +1,104 @@
+import java.util.*;
+class Student {
+    int id;
+    String name;
+    double[] marks;
+    Student(int id, String name, double[] marks) {
+        this.id = id;
+        this.name = name;
+        this.marks = marks;
+    }
+    double getAverage() {
+        double sum = 0;
+        for (double m : marks) sum += m;
+        return sum / marks.length;
+    }
+    String getGrade() {
+        double avg = getAverage();
+        if (avg >= 90) return "A";
+        else if (avg >= 75) return "B";
+        else if (avg >= 50) return "C";
+        else return "Fail";
+    }
+}
+public class Main {
+    static Scanner sc = new Scanner(System.in);
+    static ArrayList<Student> list = new ArrayList<>();
+    public static void main(String[] args) {
+        while (true) {
+            System.out.println("\n1.Add 2.Display 3.Search 4.Update 5.Delete 6.Exit");
+            int ch = sc.nextInt();
+            switch (ch) {
+                case 1: addStudent(); break;
+                case 2: display(); break;
+                case 3: search(); break;
+                case 4: update(); break;
+                case 5: delete(); break;
+                case 6: System.exit(0);
+                default: System.out.println("Invalid Choice");
+            }
+        }
+    }
+    static void addStudent() {
+        System.out.print("Enter ID: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+        System.out.print("Enter Name: ");
+        String name = sc.nextLine();
+        System.out.print("Enter number of subjects: ");
+        int n = sc.nextInt();
+        double[] marks = new double[n];
+        for (int i = 0; i < n; i++) {
+            System.out.print("Mark " + (i+1) + ": ");
+            marks[i] = sc.nextDouble();
+        }
+        list.add(new Student(id, name, marks));
+        System.out.println("Student Added");
+    }
+    static void display() {
+        for (Student s : list) {
+            System.out.println(s.id + " " + s.name +
+                    " Avg: " + s.getAverage() +
+                    " Grade: " + s.getGrade());
+        }
+    }
+    static void search() {
+        System.out.print("Enter ID: ");
+        int id = sc.nextInt();
+        for (Student s : list) {
+            if (s.id == id) {
+                System.out.println("Found: " + s.name);
+                return;
+            }
+        }
+        System.out.println("Not Found");
+    }
+    static void update() {
+        System.out.print("Enter ID: ");
+        int id = sc.nextInt();
+        for (Student s : list) {
+            if (s.id == id) {
+                sc.nextLine();
+                System.out.print("New Name: ");
+                s.name = sc.nextLine();
+                System.out.println("Updated");
+                return;
+            }
+        }
+        System.out.println("Not Found");
+    }
+    static void delete() {
+        System.out.print("Enter ID: ");
+        int id = sc.nextInt();
+
+        Iterator<Student> it = list.iterator();
+        while (it.hasNext()) {
+            if (it.next().id == id) {
+                it.remove();
+                System.out.println("Deleted");
+                return;
+            }
+        }
+        System.out.println("Not Found");
+    }
+}
