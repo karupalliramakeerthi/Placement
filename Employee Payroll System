@@ -1,0 +1,134 @@
+import java.util.*;
+abstract class Employee {
+    int id;
+    String name;
+    double baseSalary;
+    Employee(int id, String name, double baseSalary) {
+        this.id = id;
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    abstract double calculateGrossSalary();
+    abstract double calculateTax();
+    void generateSlip() {
+        double gross = calculateGrossSalary();
+        double tax = calculateTax();
+        double net = gross - tax;
+        System.out.println("\n===== Salary Slip =====");
+        System.out.println("ID: " + id);
+        System.out.println("Name: " + name);
+        System.out.println("Base Salary: " + baseSalary);
+        System.out.println("Gross Salary: " + gross);
+        System.out.println("Tax: " + tax);
+        System.out.println("Net Salary: " + net);
+    }
+}
+class Manager extends Employee {
+    Manager(int id, String name, double baseSalary) {
+        super(id, name, baseSalary);
+    }
+    double calculateGrossSalary() {
+        return baseSalary + (0.30 * baseSalary); 
+    }
+    double calculateTax() {
+        double gross = calculateGrossSalary();
+        if (gross > 80000) return gross * 0.20;
+        else if (gross > 50000) return gross * 0.10;
+        else return gross * 0.05;
+    }
+}
+class Developer extends Employee {
+
+    Developer(int id, String name, double baseSalary) {
+        super(id, name, baseSalary);
+    }
+
+    double calculateGrossSalary() {
+        return baseSalary + (0.20 * baseSalary); 
+    }
+
+    double calculateTax() {
+        double gross = calculateGrossSalary();
+
+        if (gross > 80000) return gross * 0.20;
+        else if (gross > 50000) return gross * 0.10;
+        else return gross * 0.05;
+    }
+}
+public class Main {
+    static Scanner sc = new Scanner(System.in);
+    static ArrayList<Employee> employees = new ArrayList<>();
+
+    public static void main(String[] args) {
+
+        while (true) {
+            System.out.println("\n1.Add Manager 2.Add Developer 3.Generate Slip 4.Display All 5.Exit");
+            int ch = sc.nextInt();
+
+            switch (ch) {
+                case 1: addManager(); break;
+                case 2: addDeveloper(); break;
+                case 3: generateSlip(); break;
+                case 4: displayAll(); break;
+                case 5: System.exit(0);
+                default: System.out.println("Invalid Choice");
+            }
+        }
+    }
+
+    static void addManager() {
+        System.out.print("Enter ID: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter Name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Enter Base Salary: ");
+        double salary = sc.nextDouble();
+
+        employees.add(new Manager(id, name, salary));
+        System.out.println("Manager Added");
+    }
+
+    static void addDeveloper() {
+        System.out.print("Enter ID: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter Name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Enter Base Salary: ");
+        double salary = sc.nextDouble();
+
+        employees.add(new Developer(id, name, salary));
+        System.out.println("Developer Added");
+    }
+
+    static Employee findEmployee(int id) {
+        for (Employee e : employees) {
+            if (e.id == id) return e;
+        }
+        return null;
+    }
+
+    static void generateSlip() {
+        System.out.print("Enter Employee ID: ");
+        int id = sc.nextInt();
+
+        Employee e = findEmployee(id);
+
+        if (e != null) {
+            e.generateSlip();
+        } else {
+            System.out.println("Employee Not Found");
+        }
+    }
+
+    static void displayAll() {
+        for (Employee e : employees) {
+            System.out.println(e.id + " " + e.name + " Salary: " + e.baseSalary);
+        }
+    }
+}
