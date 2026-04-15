@@ -1,0 +1,105 @@
+import java.util.*;
+class Bus {
+    int busId;
+    int totalSeats;
+    boolean seats[];
+    Bus(int id, int seatsCount) {
+        busId = id;
+        totalSeats = seatsCount;
+        seats = new boolean[totalSeats];
+    }
+    void showSeats() {
+        System.out.println("\nSeat Status for Bus " + busId);
+        for (int i = 0; i < totalSeats; i++) {
+            System.out.println("Seat " + (i + 1) + " : " + (seats[i] ? "Booked" : "Available"));
+        }
+    }
+    void bookSeat(int seatNo) {
+        if (seatNo <= 0 || seatNo > totalSeats) {
+            System.out.println("Invalid seat number!");
+            return;
+        }
+
+        if (seats[seatNo - 1]) {
+            System.out.println("❌ Seat already booked!");
+        } else {
+            seats[seatNo - 1] = true;
+            System.out.println("✅ Seat booked successfully!");
+        }
+    }
+    void cancelSeat(int seatNo) {
+        if (seatNo <= 0 || seatNo > totalSeats) {
+            System.out.println("Invalid seat number!");
+            return;
+        }
+
+        if (!seats[seatNo - 1]) {
+            System.out.println("❌ Seat not booked yet!");
+        } else {
+            seats[seatNo - 1] = false;
+            System.out.println("✅ Booking cancelled!");
+        }
+    }
+}
+public class Main {
+    static Scanner sc = new Scanner(System.in);
+    static Bus bus1 = new Bus(1, 5);
+    static Bus bus2 = new Bus(2, 5);
+    public static void main(String[] args) {
+        int choice;
+
+        do {
+            System.out.println("\n===== BUS RESERVATION =====");
+            System.out.println("1. View Seats");
+            System.out.println("2. Book Seat");
+            System.out.println("3. Cancel Seat");
+            System.out.println("4. Exit");
+            System.out.print("Enter choice: ");
+
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    Bus b1 = selectBus();
+                    if (b1 != null) b1.showSeats();
+                    break;
+
+                case 2:
+                    Bus b2 = selectBus();
+                    if (b2 != null) {
+                        System.out.print("Enter seat number: ");
+                        int seat = sc.nextInt();
+                        b2.bookSeat(seat);
+                    }
+                    break;
+
+                case 3:
+                    Bus b3 = selectBus();
+                    if (b3 != null) {
+                        System.out.print("Enter seat number: ");
+                        int seat = sc.nextInt();
+                        b3.cancelSeat(seat);
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("Thank you!");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice!");
+            }
+
+        } while (choice != 4);
+    }
+    static Bus selectBus() {
+        System.out.print("Enter Bus ID (1 or 2): ");
+        int id = sc.nextInt();
+
+        if (id == 1) return bus1;
+        else if (id == 2) return bus2;
+
+        System.out.println("Invalid Bus ID!");
+        return null;
+    }
+}
