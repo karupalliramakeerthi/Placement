@@ -1,0 +1,138 @@
+import java.util.*;
+
+class Account {
+    int accNo;
+    String name;
+    double balance;
+
+    Account(int accNo, String name, double balance) {
+        this.accNo = accNo;
+        this.name = name;
+        this.balance = balance;
+    }
+
+    void deposit(double amt) {
+        balance += amt;
+        System.out.println("Deposited Successfully");
+    }
+
+    void withdraw(double amt) {
+        if (amt > balance) {
+            System.out.println("Insufficient Balance");
+        } else {
+            balance -= amt;
+            System.out.println("Withdrawal Successful");
+        }
+    }
+
+    void display() {
+        System.out.println("AccNo: " + accNo + " Name: " + name + " Balance: " + balance);
+    }
+}
+
+public class Main {
+    static Scanner sc = new Scanner(System.in);
+    static ArrayList<Account> accounts = new ArrayList<>();
+
+    public static void main(String[] args) {
+        while (true) {
+            System.out.println("\n1.Create 2.Deposit 3.Withdraw 4.View 5.Transfer 6.Exit");
+            int ch = sc.nextInt();
+
+            switch (ch) {
+                case 1: createAccount(); break;
+                case 2: deposit(); break;
+                case 3: withdraw(); break;
+                case 4: view(); break;
+                case 5: transfer(); break;
+                case 6: System.exit(0);
+                default: System.out.println("Invalid Choice");
+            }
+        }
+    }
+
+    static Account findAccount(int accNo) {
+        for (Account a : accounts) {
+            if (a.accNo == accNo) return a;
+        }
+        return null;
+    }
+
+    static void createAccount() {
+        System.out.print("Enter AccNo: ");
+        int accNo = sc.nextInt();
+        sc.nextLine();
+        System.out.print("Enter Name: ");
+        String name = sc.nextLine();
+        System.out.print("Enter Initial Balance: ");
+        double bal = sc.nextDouble();
+
+        accounts.add(new Account(accNo, name, bal));
+        System.out.println("Account Created");
+    }
+
+    static void deposit() {
+        System.out.print("Enter AccNo: ");
+        int accNo = sc.nextInt();
+        Account a = findAccount(accNo);
+
+        if (a != null) {
+            System.out.print("Enter Amount: ");
+            double amt = sc.nextDouble();
+            a.deposit(amt);
+        } else {
+            System.out.println("Account Not Found");
+        }
+    }
+
+    static void withdraw() {
+        System.out.print("Enter AccNo: ");
+        int accNo = sc.nextInt();
+        Account a = findAccount(accNo);
+
+        if (a != null) {
+            System.out.print("Enter Amount: ");
+            double amt = sc.nextDouble();
+            a.withdraw(amt);
+        } else {
+            System.out.println("Account Not Found");
+        }
+    }
+
+    static void view() {
+        System.out.print("Enter AccNo: ");
+        int accNo = sc.nextInt();
+        Account a = findAccount(accNo);
+
+        if (a != null) {
+            a.display();
+        } else {
+            System.out.println("Account Not Found");
+        }
+    }
+
+    static void transfer() {
+        System.out.print("From AccNo: ");
+        int from = sc.nextInt();
+        System.out.print("To AccNo: ");
+        int to = sc.nextInt();
+
+        Account a1 = findAccount(from);
+        Account a2 = findAccount(to);
+
+        if (a1 != null && a2 != null) {
+            System.out.print("Enter Amount: ");
+            double amt = sc.nextDouble();
+
+            if (amt > a1.balance) {
+                System.out.println("Insufficient Balance");
+            } else {
+                a1.withdraw(amt);
+                a2.deposit(amt);
+                System.out.println("Transfer Successful");
+            }
+        } else {
+            System.out.println("Invalid Accounts");
+        }
+    }
+}
