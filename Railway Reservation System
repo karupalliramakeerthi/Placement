@@ -1,0 +1,123 @@
+import java.util.*;
+class Ticket {
+    int ticketId;
+    String passengerName;
+    int seatNumber;
+    Ticket(int ticketId, String passengerName, int seatNumber) {
+        this.ticketId = ticketId;
+        this.passengerName = passengerName;
+        this.seatNumber = seatNumber;
+    }
+}
+public class Main {
+    static Scanner sc = new Scanner(System.in);
+    static final int TOTAL_SEATS = 5;
+    static boolean[] seats = new boolean[TOTAL_SEATS];
+    static ArrayList<Ticket> bookings = new ArrayList<>();
+    static int ticketCounter = 1001;
+    static void viewSeats() {
+        System.out.println("\n--- Seat Availability ---");
+        for (int i = 0; i < TOTAL_SEATS; i++) {
+            System.out.println("Seat " + (i + 1) + " : " +
+                    (seats[i] ? "Booked" : "Available"));
+        }
+    }
+    static void bookTicket() {
+        if (bookings.size() == TOTAL_SEATS) {
+            System.out.println("❌ All seats are booked! No more tickets available.");
+            return;
+        }
+
+        viewSeats();
+
+        System.out.print("Enter Seat Number: ");
+        int seatNo = sc.nextInt();
+        if (seatNo < 1 || seatNo > TOTAL_SEATS) {
+            System.out.println("❌ Invalid seat number!");
+            return;
+        }
+        if (seats[seatNo - 1]) {
+            System.out.println("❌ Seat already booked! Choose another seat.");
+            return;
+        }
+
+        sc.nextLine();
+        System.out.print("Enter Passenger Name: ");
+        String name = sc.nextLine();
+        int ticketId = ticketCounter++;
+
+        seats[seatNo - 1] = true;
+        bookings.add(new Ticket(ticketId, name, seatNo));
+
+        System.out.println("✅ Ticket Booked Successfully!");
+        System.out.println("🎫 Ticket ID: " + ticketId);
+    }
+    static void cancelTicket() {
+        System.out.print("Enter Ticket ID: ");
+        int id = sc.nextInt();
+
+        Iterator<Ticket> it = bookings.iterator();
+
+        while (it.hasNext()) {
+            Ticket t = it.next();
+
+            if (t.ticketId == id) {
+                seats[t.seatNumber - 1] = false;
+                it.remove();
+
+                System.out.println("✅ Ticket Cancelled!");
+                return;
+            }
+        }
+        System.out.println("❌ Invalid Ticket ID!");
+    }
+    static void viewBookings() {
+        if (bookings.isEmpty()) {
+            System.out.println("No bookings found!");
+            return;
+        }
+
+        System.out.println("\n--- Booked Tickets ---");
+        for (Ticket t : bookings) {
+            System.out.println("Ticket ID: " + t.ticketId +
+                    " | Name: " + t.passengerName +
+                    " | Seat: " + t.seatNumber);
+        }
+    }
+    public static void main(String[] args) {
+        int choice;
+
+        do {
+            System.out.println("\n===== RAILWAY RESERVATION SYSTEM =====");
+            System.out.println("1. View Seats");
+            System.out.println("2. Book Ticket");
+            System.out.println("3. Cancel Ticket");
+            System.out.println("4. View Bookings");
+            System.out.println("5. Exit");
+
+            System.out.print("Enter choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    viewSeats();
+                    break;
+                case 2:
+                    bookTicket();
+                    break;
+                case 3:
+                    cancelTicket();
+                    break;
+                case 4:
+                    viewBookings();
+                    break;
+                case 5:
+                    System.out.println("👋 Thank you!");
+                    break;
+                default:
+                    System.out.println("❌ Invalid choice!");
+            }
+
+        } while (choice != 5);
+    }
+}
